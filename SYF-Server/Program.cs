@@ -9,6 +9,10 @@ namespace SYF_Server
     {
         static void Main(string[] args)
         {
+            Server srv = new Server(12345);
+            srv.Start();
+
+            Console.Read();
         }
     }
 }
