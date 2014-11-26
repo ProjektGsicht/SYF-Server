@@ -24,12 +24,13 @@ namespace SYF_Server
         {
             DateTime Date = DateTime.Now;
             string DateString = Date.ToShortDateString();
-            string TimeString = Date.ToLongTimeString();
+            string TimeString = Date.ToLongTimeString() + "." + Date.Millisecond.ToString().PadLeft(3, '0');
 
             ConsoleColor OldColor = Console.ForegroundColor;
 
+            Console.Write("[{0}] ", TimeString);
             Console.ForegroundColor = Color;
-            Console.WriteLine("[{0}] {1}", TimeString, Text);
+            Console.WriteLine(Text);
             Console.ForegroundColor = OldColor;
 
             var Writer = File.AppendText(Filename);
