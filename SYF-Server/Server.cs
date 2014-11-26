@@ -28,6 +28,8 @@ namespace SYF_Server
         private List<Client> Clients;
         private Logger ServerLogger;
 
+        public static ManualResetEvent tcpClientConnected = new ManualResetEvent(false);
+
         public Server(int Port)
         {
             this.Port = Port;
@@ -87,20 +89,15 @@ namespace SYF_Server
 
         private void ListenerLoop()
         {
-            while (IsRunning)
-            {
-                if (ServerSocket.Pending())
-                {
-                    ServerLogger.Log("New Client trying to connect ...");
+            ServerSocket.BeginAcceptTcpClient(new AsyncCallback(AddNewClient), ServerSocket);
+        }
 
-                    TcpClient NewClientSocket = ServerSocket.AcceptTcpClient();
-                    Client NewClient = new Client(NewClientSocket, ServerLogger);
+        private void AddNewClient(IAsyncResult ar)
+        {
+            ServerLogger.Log("New Client trying to connect ...");
 
-                    Clients.Add(NewClient);
-                }
-
-                Thread.Sleep(50);
-            }
+            TcpClient Client = ((TcpListener)ar.AsyncState).EndAcceptTcpClient(ar);
+            Client NewClient = new Client(Client, ServerLogger);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.IO;
 
 namespace SYF_Server
 {
@@ -20,31 +21,77 @@ namespace SYF_Server
 
         public delegate void ClientDisconnectedHandler(Object sender, EventArgs e);
         public event ClientDisconnectedHandler ClientDisconnected;
+        private EndPoint LocalEndpoint;
+
+        private Thread AvaibilityThread;
+        private Thread ReaderThread;
 
         public Client(TcpClient ClientSocket, Logger ServerLogger)
         {
             _ClientSocket = ClientSocket;
             this.ServerLogger = ServerLogger;
 
-            ClientSocket.ReceiveTimeout = 10;
-            ClientSocket.SendTimeout = 10;
+            LocalEndpoint = ClientSocket.Client.RemoteEndPoint;
 
             ClientDisconnected += new ClientDisconnectedHandler(OnClientDisconnectedHandler);
 
             ServerLogger.Log(ClientSocket.Client.RemoteEndPoint.ToString() + " connected", ConsoleColor.Green);
 
-            Thread AvaibilityThread = new Thread(AvaibilityChecker);
+            ReaderThread = new Thread(Reader);
+            ReaderThread.Start();
+
+            AvaibilityThread = new Thread(AvaibilityChecker);
             AvaibilityThread.Start();
+        }
+
+        public void Write(string message)
+        {
+            using (StreamWriter Writer = new StreamWriter(ClientSocket.GetStream()))
+            {
+                Writer.Write(message);
+                Writer.Flush();
+            }
+        }
+
+        private void Reader()
+        {
+            using (StreamReader Reader = new StreamReader(ClientSocket.GetStream()))
+            {
+                while (ClientSocket.Connected)
+                {
+                    try
+                    {
+                        string message = Reader.ReadLine();
+
+                        ServerLogger.Log(message, ConsoleColor.Yellow);
+                    }
+                    catch (Exception ex)
+                    {
+                        ServerLogger.Log(ex.Message, ConsoleColor.DarkRed);
+                    }
+                }
+            }
         }
 
         private void AvaibilityChecker()
         {
-            while (ClientSocket.Connected)
+            while (true)
             {
-                Thread.Sleep(10);
+                try
+                {
+                    Write("PING");
+                    ServerLogger.Log(String.Format("{0} - PING", LocalEndpoint.ToString()), ConsoleColor.DarkMagenta);
+                }
+                catch (Exception ex)
+                {
+                    ServerLogger.Log(ex.Message, ConsoleColor.DarkRed);
+                    break;
+                }
+
+                Thread.Sleep(1000);
             }
 
-            OnClientDisconnected(null);
+            OnClientDisconnected(EventArgs.Empty);
         }
 
         private void OnClientDisconnected(EventArgs e)
@@ -55,7 +102,8 @@ namespace SYF_Server
 
         private void OnClientDisconnectedHandler(Object sender, EventArgs e)
         {
-            ServerLogger.Log(ClientSocket.Client.RemoteEndPoint.ToString() + " disconnected", ConsoleColor.Red);
+            ServerLogger.Log(LocalEndpoint.ToString() + " disconnected", ConsoleColor.Red);
+            ClientSocket.Close();
         }
 
         public void Drop()
