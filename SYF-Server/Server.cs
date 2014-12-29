@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.IO;
 
 namespace SYF_Server
 {
@@ -35,8 +36,8 @@ namespace SYF_Server
             this.Port = Port;
 
             Clients = new List<Client>();
-            ServerSocket = new TcpListener(new IPAddress(0x0), this.Port);
-            ServerLogger = new Logger("log_" + Port);
+            ServerSocket = new TcpListener(IPAddress.Parse("127.0.0.1"), this.Port);
+            ServerLogger = new Logger("./log_" + DateTime.Now.ToLongTimeString().Replace(":", "-") + "." + DateTime.Now.Millisecond.ToString() + "_" + this.Port);
         }
 
         public bool Start()
@@ -55,8 +56,8 @@ namespace SYF_Server
                 _IsRunning = true;
 
                 ServerLogger.Log("Starting listener queue ...");
-                ListenerThread = new Thread(ListenerLoop);
-                ListenerThread.Start();
+
+                ServerSocket.BeginAcceptTcpClient(AddNewClient, ServerSocket);
 
                 return true;
             }
@@ -87,17 +88,14 @@ namespace SYF_Server
             }
         }
 
-        private void ListenerLoop()
-        {
-            ServerSocket.BeginAcceptTcpClient(new AsyncCallback(AddNewClient), ServerSocket);
-        }
-
         private void AddNewClient(IAsyncResult ar)
         {
             ServerLogger.Log("New Client trying to connect ...");
 
             TcpClient Client = ((TcpListener)ar.AsyncState).EndAcceptTcpClient(ar);
+
             Client NewClient = new Client(Client, ServerLogger);
+            Clients.Add(NewClient);
         }
     }
 }
