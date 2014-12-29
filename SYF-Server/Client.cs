@@ -26,6 +26,9 @@ namespace SYF_Server
         private Thread AvaibilityThread;
         private Thread ReaderThread;
 
+        StreamWriter Writer;
+        StreamReader Reader;
+
         public Client(TcpClient ClientSocket, Logger ServerLogger)
         {
             _ClientSocket = ClientSocket;
@@ -37,7 +40,10 @@ namespace SYF_Server
 
             ServerLogger.Log(ClientSocket.Client.RemoteEndPoint.ToString() + " connected", ConsoleColor.Green);
 
-            ReaderThread = new Thread(Reader);
+            Writer = new StreamWriter(ClientSocket.GetStream());
+            Reader = new StreamReader(ClientSocket.GetStream());
+
+            ReaderThread = new Thread(TReader);
             ReaderThread.Start();
 
             AvaibilityThread = new Thread(AvaibilityChecker);
@@ -46,29 +52,29 @@ namespace SYF_Server
 
         public void Write(string message)
         {
-            using (StreamWriter Writer = new StreamWriter(ClientSocket.GetStream()))
-            {
-                Writer.Write(message);
-                Writer.Flush();
-            }
+            Writer.Write(message);
+            Writer.Flush();
         }
 
-        private void Reader()
+        public void WriteLine(string message)
         {
-            using (StreamReader Reader = new StreamReader(ClientSocket.GetStream()))
-            {
-                while (ClientSocket.Connected)
-                {
-                    try
-                    {
-                        string message = Reader.ReadLine();
+            Writer.WriteLine(message);
+            Writer.Flush();
+        }
 
-                        ServerLogger.Log(message, ConsoleColor.Yellow);
-                    }
-                    catch (Exception ex)
-                    {
-                        ServerLogger.Log(ex.Message, ConsoleColor.DarkRed);
-                    }
+        private void TReader()
+        {
+            while (ClientSocket.Connected)
+            {
+                try
+                {
+                    string message = Reader.ReadLine();
+
+                    ServerLogger.Log(String.Format("{0} - {1}", LocalEndpoint.ToString(), message), ConsoleColor.Yellow);
+                }
+                catch (Exception ex)
+                {
+                    //ServerLogger.Log(String.Format("{0} - {1}", LocalEndpoint.ToString(), ex.Message), ConsoleColor.DarkRed);
                 }
             }
         }
@@ -79,12 +85,12 @@ namespace SYF_Server
             {
                 try
                 {
-                    Write("PING");
+                    WriteLine("PING");
                     ServerLogger.Log(String.Format("{0} - PING", LocalEndpoint.ToString()), ConsoleColor.DarkMagenta);
                 }
                 catch (Exception ex)
                 {
-                    ServerLogger.Log(ex.Message, ConsoleColor.DarkRed);
+                    //ServerLogger.Log(ex.Message, ConsoleColor.DarkRed);
                     break;
                 }
 
