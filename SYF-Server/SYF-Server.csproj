@@ -47,7 +47,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Messages\ErrorMessage.cs" />
     <Compile Include="Messages\FingerprintMessage.cs" />
-    <Compile Include="Messages\ImageMessage.cs" />
+    <Compile Include="Messages\FaceImageMessage.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageType.cs" />
     <Compile Include="Messages\TextMessage.cs" />

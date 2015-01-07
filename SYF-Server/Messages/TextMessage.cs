@@ -10,6 +10,11 @@ namespace SYF_Server.Messages
     [DataContractAttribute]
     public class TextMessage : Message
     {
+        public TextMessage()
+        {
+            this.Type = MessageType.Text;
+        }
+
         [DataMemberAttribute]
         public string Text;
     }
