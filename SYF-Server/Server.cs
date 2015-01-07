@@ -25,11 +25,8 @@ namespace SYF_Server
         }
 
         private TcpListener ServerSocket;
-        private Thread ListenerThread;
         private List<Client> Clients;
         private Logger ServerLogger;
-
-        public static ManualResetEvent tcpClientConnected = new ManualResetEvent(false);
 
         public Server(int Port)
         {
@@ -69,21 +66,13 @@ namespace SYF_Server
 
         public void Stop()
         {
-            if (_IsRunning)
+            _IsRunning = false;
+
+            if (Clients != null)
             {
-                _IsRunning = false;
-
-                if (ListenerThread != null)
+                foreach(Client SingleClient in Clients)
                 {
-                    ListenerThread.Abort();
-                }
-
-                if (Clients != null)
-                {
-                    foreach(Client SingleClient in Clients)
-                    {
-                        SingleClient.Drop();
-                    }
+                    SingleClient.Drop();
                 }
             }
         }
