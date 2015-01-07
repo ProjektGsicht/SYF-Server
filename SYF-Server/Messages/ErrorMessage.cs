@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Json;
 
 namespace SYF_Server.Messages
 {
-    enum ErrorCode
+    public enum ErrorCode
     {
 
     }
@@ -15,6 +15,11 @@ namespace SYF_Server.Messages
     [DataContractAttribute]
     public class ErrorMessage : TextMessage
     {
+        public ErrorMessage()
+        {
+            this.Type = MessageType.Error;
+        }
+
         [DataMemberAttribute]
         public ErrorCode Code;
     }

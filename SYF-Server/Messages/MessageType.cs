@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SYF_Server.Messages
 {
-    enum MessageType
+    public enum MessageType
     {
         Text = 0,
         Error = 1,

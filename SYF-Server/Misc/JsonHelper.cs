@@ -15,6 +15,7 @@ namespace SYF_Server
         {
             try
             {
+                JsonText = JsonText.Replace("\0", "");
                 DataContractJsonSerializer Serializer = new DataContractJsonSerializer(typeof(T));
 
                 MemoryStream MemStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonText));
@@ -22,7 +23,7 @@ namespace SYF_Server
 
                 return myObject;
             }
-            catch
+            catch (Exception ex)
             {
                 return default(T);
             }
@@ -34,7 +35,8 @@ namespace SYF_Server
             {
                 DataContractJsonSerializer Serializer = new DataContractJsonSerializer(typeof(T));
 
-                MemoryStream MemStream = new MemoryStream();
+                byte[] buffer = new byte[1024*1024];
+                MemoryStream MemStream = new MemoryStream(buffer);
                 Serializer.WriteObject(MemStream, myObject);
             
                 MemStream.Seek(0, SeekOrigin.Begin);
@@ -42,9 +44,11 @@ namespace SYF_Server
                 StreamReader MemReader = new StreamReader(MemStream);
                 string JsonText = MemReader.ReadToEnd();
 
+                JsonText.TrimEnd('\0');
+
                 return JsonText;
             }
-            catch
+            catch (Exception ex)
             {
                 return string.Empty;
             }
