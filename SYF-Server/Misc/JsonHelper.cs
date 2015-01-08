@@ -35,8 +35,7 @@ namespace SYF_Server
             {
                 DataContractJsonSerializer Serializer = new DataContractJsonSerializer(typeof(T));
 
-                byte[] buffer = new byte[1024*1024];
-                MemoryStream MemStream = new MemoryStream(buffer);
+                MemoryStream MemStream = new MemoryStream();
                 Serializer.WriteObject(MemStream, myObject);
             
                 MemStream.Seek(0, SeekOrigin.Begin);
