@@ -11,35 +11,48 @@ namespace SYF_Server.Misc
     [DataContractAttribute]
     public class Settings
     {
-        private static Settings mySettings = null;
+        private static object syncInstance = new Object();
+        private static object syncLoad = new Object();
+        private static object syncSave = new Object();
+
+        private static Settings myInstance = null;
         public static Settings GetInstance()
         {
-            if (mySettings == null)
+            lock (syncInstance)
             {
-                Load();
+                if (myInstance == null)
+                {
+                    Load();
+                }
             }
 
-            return mySettings;
+            return myInstance;
         }
 
         public static void Load(string Path = "./settings.json")
         {
-            if (File.Exists(Path))
+            lock (syncLoad)
             {
-                string JsonSettings = File.ReadAllText(Path);
-                mySettings = JsonHelper.Deserialize<Settings>(JsonSettings);
-            }
-            else
-            {
-                mySettings = new Settings();
-                Settings.Save();
+                if (File.Exists(Path))
+                {
+                    string JsonSettings = File.ReadAllText(Path);
+                    myInstance = JsonHelper.Deserialize<Settings>(JsonSettings);
+                }
+                else
+                {
+                    myInstance = new Settings();
+                    Settings.Save();
+                }
             }
         }
 
         public static void Save(string Path = "./settings.json")
         {
-            string JsonSettings = JsonHelper.Serialize<Settings>(mySettings);
-            File.WriteAllText(Path, JsonSettings);
+            lock (syncSave)
+            {
+                string JsonSettings = JsonHelper.Serialize<Settings>(myInstance);
+                File.WriteAllText(Path, JsonSettings);
+            }
         }
 
         [DataMemberAttribute]

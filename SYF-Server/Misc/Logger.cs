@@ -12,8 +12,7 @@ namespace SYF_Server
     {
         private string Filename;
         private FileStream FStream;
-
-        bool WriteInProgress = false;
+        private static object syncLogger = new Object();
 
         public Logger(string Filename)
         {
@@ -40,30 +39,24 @@ namespace SYF_Server
                     return;
             }
 
-            while (WriteInProgress)
+            lock (syncLogger)
             {
-                Thread.Sleep(1);
+                DateTime Date = DateTime.Now;
+                string DateString = Date.ToShortDateString();
+                string TimeString = Date.ToLongTimeString() + "." + Date.Millisecond.ToString().PadLeft(3, '0');
+
+                Console.ResetColor();
+
+                Console.Write("[{0}] ", TimeString);
+                Console.ForegroundColor = Color;
+                Console.WriteLine(Text);
+
+                Console.ResetColor();
+
+                var Writer = new StreamWriter(FStream);
+                Writer.WriteLine("[{0} {1}] {2}", DateString, TimeString, Text);
+                Writer.Flush();
             }
-
-            WriteInProgress = true;
-
-            DateTime Date = DateTime.Now;
-            string DateString = Date.ToShortDateString();
-            string TimeString = Date.ToLongTimeString() + "." + Date.Millisecond.ToString().PadLeft(3, '0');
-
-            Console.ResetColor();
-
-            Console.Write("[{0}] ", TimeString);
-            Console.ForegroundColor = Color;
-            Console.WriteLine(Text);
-
-            Console.ResetColor();
-
-            var Writer = new StreamWriter(FStream);
-            Writer.WriteLine("[{0} {1}] {2}", DateString, TimeString, Text);
-            Writer.Flush();
-
-            WriteInProgress = false;
         }
     }
 }
