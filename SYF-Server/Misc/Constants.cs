@@ -15,6 +15,7 @@ namespace SYF_Server.Misc
 
         public const string DB_FACEIMAGES                   = "faceimages";
         public const string DB_FACEIMAGES_FIELD_ID          = "id";
+        public const string DB_FACEIMAGES_FIELD_USERID      = "userid";
         public const string DB_FACEIMAGES_FIELD_FACEIMAGE   = "faceimage";
     }
 }

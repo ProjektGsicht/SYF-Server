@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace SYF_Server.Datamaps
 {
@@ -24,5 +25,6 @@ namespace SYF_Server.Datamaps
         public string Username;
         public string Name;
         public string Password;
+        public List<Bitmap> FaceImages;
     }
 }
