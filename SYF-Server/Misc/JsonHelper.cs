@@ -43,8 +43,6 @@ namespace SYF_Server
                 StreamReader MemReader = new StreamReader(MemStream);
                 string JsonText = MemReader.ReadToEnd();
 
-                JsonText.TrimEnd('\0');
-
                 return JsonText;
             }
             catch (Exception ex)

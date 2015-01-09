@@ -82,6 +82,7 @@ namespace SYF_Server
             ServerLogger.Log("New Client trying to connect ...");
 
             TcpClient Client = ((TcpListener)ar.AsyncState).EndAcceptTcpClient(ar);
+            ((TcpListener)ar.AsyncState).BeginAcceptTcpClient(AddNewClient, ((TcpListener)ar.AsyncState));
 
             Client NewClient = new Client(Client, ServerLogger);
             Clients.Add(NewClient);
