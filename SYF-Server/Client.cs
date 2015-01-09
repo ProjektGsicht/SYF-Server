@@ -74,7 +74,7 @@ namespace SYF_Server
                 }
                 catch (Exception ex)
                 {
-                    //ServerLogger.Log(String.Format("{0} - {1}", LocalEndpoint.ToString(), ex.Message), ConsoleColor.DarkRed);
+                    ServerLogger.Log(String.Format("{0} - {1}", LocalEndpoint.ToString(), ex.Message), ConsoleColor.DarkRed, true);
                 }
             }
         }
@@ -90,7 +90,7 @@ namespace SYF_Server
                 }
                 catch (Exception ex)
                 {
-                    //ServerLogger.Log(ex.Message, ConsoleColor.DarkRed);
+                    ServerLogger.Log(ex.Message, ConsoleColor.DarkRed, true);
                     break;
                 }
 

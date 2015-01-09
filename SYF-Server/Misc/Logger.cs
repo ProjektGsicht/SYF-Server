@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading;
+using SYF_Server.Misc;
 
 namespace SYF_Server
 {
@@ -28,10 +29,16 @@ namespace SYF_Server
             }
         }
 
-        public void Log(string Text, ConsoleColor Color = ConsoleColor.White)
+        public void Log(string Text, ConsoleColor Color = ConsoleColor.White, bool Debug = false)
         {
             if (Text.Length == 0)
                 return;
+
+            if (Debug)
+            {
+                if (!Settings.GetInstance().DebugEnabled)
+                    return;
+            }
 
             while (WriteInProgress)
             {

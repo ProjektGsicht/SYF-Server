@@ -11,6 +11,9 @@ namespace SYF_Server
     {
         static void Main(string[] args)
         {
+            Misc.Settings.Load();
+            Misc.Settings.Save();
+
             FaceImageMessage msg = new FaceImageMessage();
             msg.Username = "Test";
             msg.FaceImage = new Bitmap(200, 200);
