@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using SYF_Server.Messages;
+using MySql.Data.MySqlClient;
 
 namespace SYF_Server
 {
@@ -21,7 +22,8 @@ namespace SYF_Server
             string Json = JsonHelper.Serialize<FaceImageMessage>(msg);
             FaceImageMessage newmsg = JsonHelper.Deserialize<FaceImageMessage>(Json);
 
-            Database.GetInstance();
+            Database myDb = Database.GetInstance();
+            Datamaps.SqlUser ich = myDb.GetUserByName("rieglmax");
 
             Server srv = new Server(12345);
             srv.Start();

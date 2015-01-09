@@ -58,5 +58,31 @@ namespace SYF_Server
                 Connection.Open();
             }
         }
+
+        public Datamaps.SqlUser GetUserByName(string Username)
+        {
+            Datamaps.SqlUser RequestedUser = null;
+
+            MySqlCommand command = Connection.CreateCommand();
+            command.CommandText = String.Format("SELECT * FROM {0} WHERE {1}='{2}';",
+                Constants.DB_USERS,
+                Constants.DB_USERS_FIELD_USERNAME,
+                Username);
+
+            MySqlDataReader Reader;
+            Reader = command.ExecuteReader();
+
+            if (Reader.HasRows)
+            {
+                Reader.Read();
+
+                RequestedUser = new Datamaps.SqlUser(Reader.GetInt32(Constants.DB_USERS_FIELD_ID));
+                RequestedUser.Name = Reader.GetString(Constants.DB_USERS_FIELD_NAME);
+                RequestedUser.Username = Reader.GetString(Constants.DB_USERS_FIELD_USERNAME);
+                RequestedUser.Password = Reader.GetString(Constants.DB_USERS_FIELD_PASSWORD);
+            }
+
+            return RequestedUser;
+        }
     }
 }

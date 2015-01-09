@@ -55,12 +55,14 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="Datamaps\SqlUser.cs" />
     <Compile Include="Messages\ErrorMessage.cs" />
     <Compile Include="Messages\FingerprintMessage.cs" />
     <Compile Include="Messages\FaceImageMessage.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageType.cs" />
     <Compile Include="Messages\TextMessage.cs" />
+    <Compile Include="Misc\Constants.cs" />
     <Compile Include="Misc\JsonHelper.cs" />
     <Compile Include="Misc\Logger.cs" />
     <Compile Include="Misc\Settings.cs" />
