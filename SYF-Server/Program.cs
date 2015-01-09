@@ -19,8 +19,9 @@ namespace SYF_Server
             msg.FaceImage = new Bitmap(200, 200);
 
             string Json = JsonHelper.Serialize<FaceImageMessage>(msg);
-
             FaceImageMessage newmsg = JsonHelper.Deserialize<FaceImageMessage>(Json);
+
+            Database.GetInstance();
 
             Server srv = new Server(12345);
             srv.Start();

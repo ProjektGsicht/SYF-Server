@@ -60,5 +60,17 @@ namespace SYF_Server.Misc
 
         [DataMemberAttribute]
         public bool UseEncryption;
+
+        [DataMemberAttribute]
+        public string MySqlHost;
+
+        [DataMemberAttribute]
+        public string MySqlDatabase;
+
+        [DataMemberAttribute]
+        public string MySqlUser;
+
+        [DataMemberAttribute]
+        public string MySqlPassword;
     }
 }
