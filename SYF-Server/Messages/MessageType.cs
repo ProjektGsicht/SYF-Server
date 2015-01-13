@@ -10,6 +10,7 @@ namespace SYF_Server.Messages
         Text = 0,
         Error = 1,
         FaceImage = 2,
-        Fingerprint = 3
+        Fingerprint = 3,
+        NewInfo = 4
     }
 }

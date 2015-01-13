@@ -69,6 +69,7 @@
     <Compile Include="Messages\FaceImageMessage.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageType.cs" />
+    <Compile Include="Messages\NewInfoMessage.cs" />
     <Compile Include="Messages\TextMessage.cs" />
     <Compile Include="Misc\Constants.cs" />
     <Compile Include="Misc\JsonHelper.cs" />
