@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using SYF_Server.Messages;
 using MySql.Data.MySqlClient;
+using SYF_Server.Validation;
 
 namespace SYF_Server
 {
@@ -24,6 +25,8 @@ namespace SYF_Server
 
             Database myDb = Database.GetInstance();
             Datamaps.SqlUser ich = myDb.GetUserByName("rieglmax");
+
+            bool correct = new PasswordValidator(ich, "test").Validate();
 
             Server srv = new Server(12345);
             srv.Start();
