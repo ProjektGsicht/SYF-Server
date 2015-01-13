@@ -89,6 +89,7 @@ namespace SYF_Server
                     Constants.DB_FACEIMAGES_FIELD_USERID,
                     RequestedUser.Id);
 
+                Reader.Close();
                 Reader = command.ExecuteReader();
 
                 if (Reader.HasRows)
