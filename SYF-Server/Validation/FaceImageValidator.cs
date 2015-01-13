@@ -30,6 +30,18 @@ namespace SYF_Server.Validation
             }
         }
 
+        public FaceImageValidator(string User, Bitmap Image)
+        {
+            _User = Database.GetInstance().GetUserByName(User);
+            _Image = Image;
+        }
+
+        public FaceImageValidator(SqlUser User, Bitmap Image)
+        {
+            _User = User;
+            _Image = Image;
+        }
+
         public bool Validate()
         {
             FisherFaceRecognizer rec = new FisherFaceRecognizer(0, 0);

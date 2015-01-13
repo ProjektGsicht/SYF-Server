@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.IO;
 using SYF_Server.Messages;
+using SYF_Server.Validation;
 
 namespace SYF_Server
 {
@@ -123,9 +124,11 @@ namespace SYF_Server
             throw new NotImplementedException();
         }
 
-        private void ValidateFace(FaceImageMessage message)
+        private bool ValidateFace(FaceImageMessage message)
         {
-            throw new NotImplementedException();
+            FaceImageValidator Validator = new FaceImageValidator(message.Username, message.FaceImage);
+            bool FaceRecognized = Validator.Validate();
+            return FaceRecognized;
         }
 
         private void AvaibilityChecker()
