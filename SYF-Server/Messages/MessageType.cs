@@ -7,6 +7,7 @@ namespace SYF_Server.Messages
 {
     public enum MessageType
     {
+        Unknown = -1,
         Text = 0,
         Error = 1,
         FaceImage = 2,

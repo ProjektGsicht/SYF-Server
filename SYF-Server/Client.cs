@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.IO;
+using SYF_Server.Messages;
 
 namespace SYF_Server
 {
@@ -69,14 +70,62 @@ namespace SYF_Server
                 try
                 {
                     string message = Reader.ReadLine();
+                    string logmessage = string.Empty;
 
-                    ServerLogger.Log(String.Format("{0} - {1}", LocalEndpoint.ToString(), message), ConsoleColor.Yellow);
+                    if (message.Equals("PONG"))
+                    {
+                        logmessage = "PING Answer";
+                    }
+                    else
+                    {
+                        MessageType Type = Message.GetTypeFromJson(message);
+
+                        switch (Type)
+                        {
+                            case MessageType.NewInfo:
+                                {
+                                    NewInfoMessage InternalMessage = JsonHelper.Deserialize<NewInfoMessage>(message);
+                                    logmessage = String.Format("New info for user {0}.", InternalMessage.Username);
+                                    AddNewInfo(InternalMessage);
+
+                                    break;
+                                }
+
+                            case MessageType.FaceImage:
+                                {
+                                    FaceImageMessage InternalMessage = JsonHelper.Deserialize<FaceImageMessage>(message);
+                                    logmessage = String.Format("New face validation incoming for user {0}.", InternalMessage.Username);
+                                    ValidateFace(InternalMessage);
+
+                                    break;
+                                }
+
+                            case MessageType.Unknown:
+                                logmessage = "Unknown Message received.";
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+
+                    ServerLogger.Log(String.Format("{0} - {1}", LocalEndpoint.ToString(), logmessage), ConsoleColor.Yellow);
                 }
                 catch (Exception ex)
                 {
                     ServerLogger.Log(String.Format("{0} - {1}", LocalEndpoint.ToString(), ex.Message), ConsoleColor.DarkRed, true);
                 }
             }
+        }
+
+        private void AddNewInfo(NewInfoMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ValidateFace(FaceImageMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         private void AvaibilityChecker()
