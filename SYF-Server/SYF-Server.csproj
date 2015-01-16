@@ -71,6 +71,7 @@
     <Compile Include="Messages\MessageType.cs" />
     <Compile Include="Messages\NewInfoMessage.cs" />
     <Compile Include="Messages\TextMessage.cs" />
+    <Compile Include="Messages\ValidationResponseMessage.cs" />
     <Compile Include="Misc\Constants.cs" />
     <Compile Include="Misc\JsonHelper.cs" />
     <Compile Include="Misc\Logger.cs" />

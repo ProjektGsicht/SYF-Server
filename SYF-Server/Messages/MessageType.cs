@@ -12,6 +12,7 @@ namespace SYF_Server.Messages
         Error = 1,
         FaceImage = 2,
         Fingerprint = 3,
-        NewInfo = 4
+        NewInfo = 4,
+        ValidationResponse = 5
     }
 }

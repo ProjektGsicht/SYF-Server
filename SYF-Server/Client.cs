@@ -94,9 +94,12 @@ namespace SYF_Server
 
                             case MessageType.FaceImage:
                                 {
+                                    ValidationResponseMessage ResponseMessage = new ValidationResponseMessage();
                                     FaceImageMessage InternalMessage = JsonHelper.Deserialize<FaceImageMessage>(message);
                                     logmessage = String.Format("New face validation incoming for user {0}.", InternalMessage.Username);
-                                    ValidateFace(InternalMessage);
+                                    ResponseMessage.Success = true; // ValidateFace(InternalMessage);
+
+                                    WriteLine(JsonHelper.Serialize<ValidationResponseMessage>(ResponseMessage));
 
                                     break;
                                 }
@@ -137,8 +140,8 @@ namespace SYF_Server
             {
                 try
                 {
-                    WriteLine("PING");
-                    ServerLogger.Log(String.Format("{0} - PING", LocalEndpoint.ToString()), ConsoleColor.DarkMagenta);
+                    //WriteLine("PING");
+                    //ServerLogger.Log(String.Format("{0} - PING", LocalEndpoint.ToString()), ConsoleColor.DarkMagenta);
                 }
                 catch (Exception ex)
                 {
