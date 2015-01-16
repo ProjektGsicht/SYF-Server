@@ -21,6 +21,9 @@ namespace SYF_Server.Messages
         [DataMemberAttribute]
         public string Username;
 
+        [DataMemberAttribute]
+        public string WindowsUser;
+
         public Bitmap FaceImage
         {
             get
@@ -42,6 +45,6 @@ namespace SYF_Server.Messages
         }
 
         [DataMemberAttribute]
-        private byte[] InternalData;
+        public byte[] InternalData;
     }
 }

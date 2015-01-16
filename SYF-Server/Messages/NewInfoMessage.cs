@@ -25,6 +25,9 @@ namespace SYF_Server.Messages
         public string Username;
 
         [DataMemberAttribute]
+        public string WindowsUser;
+
+        [DataMemberAttribute]
         public string Password;
 
         [DataMemberAttribute]
@@ -51,7 +54,7 @@ namespace SYF_Server.Messages
         }
 
         [DataMemberAttribute]
-        private byte[] InternalDataFaceImage;
+        public byte[] InternalDataFaceImage;
 
         public Bitmap Fingerprint
         {

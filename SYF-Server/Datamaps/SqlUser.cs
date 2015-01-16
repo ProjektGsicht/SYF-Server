@@ -23,6 +23,7 @@ namespace SYF_Server.Datamaps
         }
 
         public string Username;
+        public string WindowsUser;
         public string Name;
         public string Password;
         public List<Bitmap> FaceImages;

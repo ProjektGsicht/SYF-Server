@@ -11,6 +11,7 @@ namespace SYF_Server.Misc
         public const string DB_USERS_FIELD_ID               = "id";
         public const string DB_USERS_FIELD_NAME             = "name";
         public const string DB_USERS_FIELD_USERNAME         = "username";
+        public const string DB_USERS_FIELD_WINDOWSUSER      = "windowsuser";
         public const string DB_USERS_FIELD_PASSWORD         = "password";
 
         public const string DB_FACEIMAGES                   = "faceimages";

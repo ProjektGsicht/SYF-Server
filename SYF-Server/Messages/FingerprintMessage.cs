@@ -21,6 +21,9 @@ namespace SYF_Server.Messages
         [DataMemberAttribute]
         public string Username;
 
+        [DataMemberAttribute]
+        public string WindowsUser;
+
         public Bitmap Fingerprint
         {
             get

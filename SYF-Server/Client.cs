@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.IO;
+using System.Drawing;
 using SYF_Server.Messages;
 using SYF_Server.Validation;
 
@@ -71,6 +72,11 @@ namespace SYF_Server
                 try
                 {
                     string message = Reader.ReadLine();
+                    if (message == null)
+                    {
+                        OnClientDisconnected(EventArgs.Empty);
+                    }
+
                     string logmessage = string.Empty;
 
                     if (message.Equals("PONG"))
@@ -97,7 +103,23 @@ namespace SYF_Server
                                     ValidationResponseMessage ResponseMessage = new ValidationResponseMessage();
                                     FaceImageMessage InternalMessage = JsonHelper.Deserialize<FaceImageMessage>(message);
                                     logmessage = String.Format("New face validation incoming for user {0}.", InternalMessage.Username);
-                                    ResponseMessage.Success = true; // ValidateFace(InternalMessage);
+                                    
+
+                                    ///////////////
+                                    NewInfoMessage NewMessage = new NewInfoMessage();
+                                    NewMessage.Username = InternalMessage.Username;
+                                    NewMessage.Password = "test";
+                                    NewMessage.WindowsUser = InternalMessage.Username;
+                                    NewMessage.Name = "Testi";
+                                    NewMessage.InternalDataFaceImage = new Byte[InternalMessage.InternalData.Length];
+                                    Buffer.BlockCopy(InternalMessage.InternalData, 0,
+                                        NewMessage.InternalDataFaceImage, 0,
+                                        InternalMessage.InternalData.Length);
+
+                                    AddNewInfo(NewMessage);
+                                    ///////////////
+
+                                    ResponseMessage.Success = ValidateFace(InternalMessage);
 
                                     WriteLine(JsonHelper.Serialize<ValidationResponseMessage>(ResponseMessage));
 
@@ -124,7 +146,7 @@ namespace SYF_Server
 
         private void AddNewInfo(NewInfoMessage message)
         {
-            throw new NotImplementedException();
+            Database.GetInstance().AddInfo(message);
         }
 
         private bool ValidateFace(FaceImageMessage message)

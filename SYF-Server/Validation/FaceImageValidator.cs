@@ -6,6 +6,7 @@ using SYF_Server.Datamaps;
 using System.Drawing;
 using Emgu;
 using Emgu.CV;
+using Emgu.CV.Structure;
 using Emgu.Util;
 
 namespace SYF_Server.Validation
@@ -44,22 +45,24 @@ namespace SYF_Server.Validation
 
         public bool Validate()
         {
-            FisherFaceRecognizer rec = new FisherFaceRecognizer(0, 0);
+            FisherFaceRecognizer rec = new FisherFaceRecognizer(0, 3500);
 
-            List<EmguImage> Images = new List<EmguImage>();
+            List<Image<Gray, Byte>> Images = new List<Image<Gray, Byte>>();
             List<int> Labels = new List<int>();
 
             int i = 0;
             foreach (Bitmap Image in User.FaceImages)
             {
-                Images.Add(new EmguImage(Image));
+                Images.Add(new Image<Gray, Byte>(Image));
                 Labels.Add(i);
                 i++;
             }
 
             rec.Train(Images.ToArray(), Labels.ToArray());
 
-            FaceRecognizer.PredictionResult result = rec.Predict(new EmguImage(this.Image));
+            Image<Gray, Byte> TestImage = new Image<Gray, Byte>(this.Image);
+
+            FaceRecognizer.PredictionResult result = rec.Predict(TestImage);
             result.GetType();
 
             if (result.Label > 0)
