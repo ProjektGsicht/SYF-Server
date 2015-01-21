@@ -91,13 +91,13 @@ namespace SYF_Server
                         {
                             case MessageType.NewInfo:
                                 {
+                                    ValidationResponseMessage ResponseMessage = new ValidationResponseMessage();
+
                                     NewInfoMessage InternalMessage = JsonHelper.Deserialize<NewInfoMessage>(message);
                                     logmessage = String.Format("New info for user {0}.", InternalMessage.WindowsUser);
 
                                     if (InternalMessage.InternalDataFaceImage.Length == 0)
                                     {
-                                        ValidationResponseMessage ResponseMessage = new ValidationResponseMessage();
-
                                         if (Database.GetInstance().GetUserByName(InternalMessage.WindowsUser) == null)
                                         {
                                             ResponseMessage.Success = false;
@@ -110,7 +110,10 @@ namespace SYF_Server
                                     else
                                     {
                                         AddNewInfo(InternalMessage);
+                                        ResponseMessage.Success = true;
                                     }
+
+                                    WriteLine(JsonHelper.Serialize<ValidationResponseMessage>(ResponseMessage));
 
                                     break;
                                 }
