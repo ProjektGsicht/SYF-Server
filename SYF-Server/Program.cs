@@ -16,6 +16,10 @@ namespace SYF_Server
             Misc.Settings.Load();
             Misc.Settings.Save();
 
+            Misc.Settings.GetInstance().MySqlHost = "hakase";
+            Misc.Settings.GetInstance().MySqlUser = "syf";
+            Misc.Settings.GetInstance().MySqlPassword = "syf";
+
             FaceImageMessage msg = new FaceImageMessage();
             msg.Username = "Test";
             msg.FaceImage = new Bitmap(200, 200);
