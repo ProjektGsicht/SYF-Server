@@ -68,13 +68,13 @@ namespace SYF_Server
             SqlUser RequestedUser = null;
 
             MySqlCommand command = Connection.CreateCommand();
-            command.CommandText = String.Format("SELECT * FROM {0} WHERE {1} = ?username;",
+            command.CommandText = String.Format("SELECT * FROM `{0}` WHERE {1} = ?username;",
                 Constants.DB_USERS,
                 Constants.DB_USERS_FIELD_USERNAME);
 
             if (Username.Contains("\\"))
             {
-                command.CommandText = String.Format("SELECT * FROM {0} WHERE {1} = ?username;",
+                command.CommandText = String.Format("SELECT * FROM `{0}` WHERE {1} = ?username;",
                     Constants.DB_USERS,
                     Constants.DB_USERS_FIELD_WINDOWSUSER);
             }
@@ -99,7 +99,7 @@ namespace SYF_Server
 
                 command.Dispose();
                 command = Connection.CreateCommand();
-                command.CommandText = String.Format("SELECT * FROM {0} WHERE {1}='{2}';",
+                command.CommandText = String.Format("SELECT * FROM `{0}` WHERE {1}='{2}';",
                     Constants.DB_FACEIMAGES,
                     Constants.DB_FACEIMAGES_FIELD_USERID,
                     RequestedUser.Id);
@@ -152,7 +152,7 @@ namespace SYF_Server
 
                 if (User == null)
                 {
-                    command.CommandText = String.Format("INSERT INTO {0} ({1}, {2}, {3}, {4}) VALUES (?name, ?username, ?windowsuser, ?password);",
+                    command.CommandText = String.Format("INSERT INTO `{0}` ({1}, {2}, {3}, {4}) VALUES (?name, ?username, ?windowsuser, ?password);",
                         Constants.DB_USERS,
                         Constants.DB_USERS_FIELD_NAME,
                         Constants.DB_USERS_FIELD_USERNAME,
@@ -170,7 +170,7 @@ namespace SYF_Server
                 }
                 else
                 {
-                    command.CommandText = String.Format("UPDATE {0} SET {1} = ?name, {2} = ?windowsuser WHERE {3} = ?userid;",
+                    command.CommandText = String.Format("UPDATE `{0}` SET {1} = ?name, {2} = ?windowsuser WHERE {3} = ?userid;",
                         Constants.DB_USERS,
                         Constants.DB_USERS_FIELD_NAME,
                         Constants.DB_USERS_FIELD_WINDOWSUSER,
@@ -205,7 +205,7 @@ namespace SYF_Server
             {
                 command.Connection = Connection;
 
-                command.CommandText = String.Format("INSERT INTO {0} ({1}, {2}) VALUES (?userid, ?faceimage);",
+                command.CommandText = String.Format("INSERT INTO `{0}` ({1}, {2}) VALUES (?userid, ?faceimage);",
                     Constants.DB_FACEIMAGES,
                     Constants.DB_FACEIMAGES_FIELD_USERID,
                     Constants.DB_FACEIMAGES_FIELD_FACEIMAGE);
