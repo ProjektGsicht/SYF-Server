@@ -16,6 +16,7 @@ namespace SYF_Server
             Misc.Settings.Load();
             Misc.Settings.Save();
 
+            /*
             Misc.Settings.GetInstance().MySqlHost = "hakase";
             Misc.Settings.GetInstance().MySqlUser = "syf";
             Misc.Settings.GetInstance().MySqlPassword = "syf";
@@ -32,6 +33,7 @@ namespace SYF_Server
             Datamaps.SqlUser ich = myDb.GetUserByName("rieglmax");
 
             bool correct = new PasswordValidator(ich, "test").Validate();
+            */
 
             Server srv = new Server(12345);
             srv.Start();

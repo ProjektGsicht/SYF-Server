@@ -33,7 +33,7 @@ namespace SYF_Server
             this.Port = Port;
 
             Clients = new List<Client>();
-            ServerSocket = new TcpListener(IPAddress.Parse("127.0.0.1"), this.Port);
+            ServerSocket = new TcpListener(new IPEndPoint(0, this.Port));
             ServerLogger = new Logger("./log_" + DateTime.Now.ToLongTimeString().Replace(":", "-") + "." + DateTime.Now.Millisecond.ToString() + "_" + this.Port);
         }
 
