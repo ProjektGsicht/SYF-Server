@@ -109,8 +109,16 @@ namespace SYF_Server
                                     }
                                     else
                                     {
-                                        AddNewInfo(InternalMessage);
-                                        ResponseMessage.Success = true;
+                                        try
+                                        {
+                                            AddNewInfo(InternalMessage);
+                                            ResponseMessage.Success = true;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            ResponseMessage.Success = false;
+                                            ResponseMessage.ErrorMessage = ex.Message;
+                                        }
                                     }
 
                                     WriteLine(JsonHelper.Serialize<ValidationResponseMessage>(ResponseMessage));
@@ -126,20 +134,29 @@ namespace SYF_Server
                                     
 
                                     ///////////////
-                                    NewInfoMessage NewMessage = new NewInfoMessage();
-                                    NewMessage.Username = InternalMessage.Username;
+                                    /*NewInfoMessage NewMessage = new NewInfoMessage();
+                                    NewMessage.Username = InternalMessage.WindowsUser;
                                     NewMessage.Password = "test";
-                                    NewMessage.WindowsUser = InternalMessage.Username;
+                                    NewMessage.WindowsUser = InternalMessage.WindowsUser;
                                     NewMessage.Name = "Testi";
                                     NewMessage.InternalDataFaceImage = new Byte[InternalMessage.InternalData.Length];
                                     Buffer.BlockCopy(InternalMessage.InternalData, 0,
                                         NewMessage.InternalDataFaceImage, 0,
-                                        InternalMessage.InternalData.Length);
+                                        InternalMessage.InternalData.Length);*/
 
-                                    AddNewInfo(NewMessage);
+                                    try
+                                    {
+                                        //AddNewInfo(NewMessage);
+                                        ResponseMessage.Success = ValidateFace(InternalMessage);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        ResponseMessage.Success = false;
+                                        ResponseMessage.ErrorMessage = ex.Message;
+                                    }
                                     ///////////////
 
-                                    ResponseMessage.Success = ValidateFace(InternalMessage);
+                                    
 
                                     WriteLine(JsonHelper.Serialize<ValidationResponseMessage>(ResponseMessage));
 

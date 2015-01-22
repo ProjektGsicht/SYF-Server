@@ -15,12 +15,15 @@ namespace SYF_Server
         {
             Misc.Settings.Load();
             Misc.Settings.Save();
-
-            /*
-            Misc.Settings.GetInstance().MySqlHost = "hakase";
+            
+            /*Misc.Settings.GetInstance().MySqlHost = "hakase";
             Misc.Settings.GetInstance().MySqlUser = "syf";
             Misc.Settings.GetInstance().MySqlPassword = "syf";
+            Misc.Settings.GetInstance().MySqlDatabase = "syf";*/
 
+            Database myDb = Database.GetInstance();
+
+            /*
             FaceImageMessage msg = new FaceImageMessage();
             msg.Username = "Test";
             msg.FaceImage = new Bitmap(200, 200);
